@@ -116,70 +116,6 @@ class NetworkManagement
 	}
 
 
-	NetUserGetGroups(UserName, ServerName := "127.0.0.1")
-	{
-		static GROUP_USERS_INFO_0 := 0
-
-		NET_API_STATUS := DllCall("netapi32\NetUserGetGroups", "wstr",  ServerName
-		                                                     , "wstr",  UserName
-		                                                     , "uint",  GROUP_USERS_INFO_0
-		                                                     , "ptr*",  buf
-		                                                     , "uint",  this.MAX_PREFERRED_LENGTH
-		                                                     , "uint*", EntriesRead
-		                                                     , "uint*", TotalEntries
-		                                                     , "uint")
-
-		if (NET_API_STATUS = this.NERR_SUCCESS)
-		{
-			addr := buf, GROUP_USERS_INFO := []
-			loop % EntriesRead
-			{
-				GROUP_USERS_INFO.Push(StrGet(NumGet(addr + A_PtrSize * 0, "uptr"), "utf-16"))
-				addr += A_PtrSize
-			}
-
-			this.NetApiBufferFree(buf)
-			return GROUP_USERS_INFO
-		}
-
-		this.NetApiBufferFree(buf)
-		return false
-	}
-
-
-	NetUserGetLocalGroups(UserName, Domain := "", ServerName := "127.0.0.1")
-	{
-		static LOCALGROUP_USERS_INFO_0 := 0
-		static LG_INCLUDE_INDIRECT := 0x0001
-
-		NET_API_STATUS := DllCall("netapi32\NetUserGetLocalGroups", "wstr",  ServerName
-		                                                          , "wstr",  Domain . UserName
-		                                                          , "uint",  LOCALGROUP_USERS_INFO_0
-		                                                          , "uint",  LG_INCLUDE_INDIRECT
-		                                                          , "ptr*",  buf
-		                                                          , "uint",  this.MAX_PREFERRED_LENGTH
-		                                                          , "uint*", EntriesRead
-		                                                          , "uint*"  TotalEntries
-		                                                          , "uint")
-
-		if (NET_API_STATUS = this.NERR_SUCCESS)
-		{
-			addr := buf, LOCALGROUP_USERS_INFO := []
-			loop % EntriesRead
-			{
-				LOCALGROUP_USERS_INFO.Push(StrGet(NumGet(addr + A_PtrSize * 0, "uptr"), "utf-16"))
-				addr += A_PtrSize
-			}
-
-			this.NetApiBufferFree(buf)
-			return LOCALGROUP_USERS_INFO
-		}
-
-		this.NetApiBufferFree(buf)
-		return false
-	}
-
-
 	NetGetJoinInformation(Server := "127.0.0.1")
 	{
 		static JOIN_STATUS := { 0: "Unknown", 1: "Unjoined", 2: "Workgroup", 3: "Domain" }
@@ -296,6 +232,70 @@ class NetworkManagement
 
 			this.NetApiBufferFree(buf)
 			return SERVER_TRANSPORT_INFO
+		}
+
+		this.NetApiBufferFree(buf)
+		return false
+	}
+
+
+	NetUserGetGroups(UserName, ServerName := "127.0.0.1")
+	{
+		static GROUP_USERS_INFO_0 := 0
+
+		NET_API_STATUS := DllCall("netapi32\NetUserGetGroups", "wstr",  ServerName
+		                                                     , "wstr",  UserName
+		                                                     , "uint",  GROUP_USERS_INFO_0
+		                                                     , "ptr*",  buf
+		                                                     , "uint",  this.MAX_PREFERRED_LENGTH
+		                                                     , "uint*", EntriesRead
+		                                                     , "uint*", TotalEntries
+		                                                     , "uint")
+
+		if (NET_API_STATUS = this.NERR_SUCCESS)
+		{
+			addr := buf, GROUP_USERS_INFO := []
+			loop % EntriesRead
+			{
+				GROUP_USERS_INFO.Push(StrGet(NumGet(addr + A_PtrSize * 0, "uptr"), "utf-16"))
+				addr += A_PtrSize
+			}
+
+			this.NetApiBufferFree(buf)
+			return GROUP_USERS_INFO
+		}
+
+		this.NetApiBufferFree(buf)
+		return false
+	}
+
+
+	NetUserGetLocalGroups(UserName, Domain := "", ServerName := "127.0.0.1")
+	{
+		static LOCALGROUP_USERS_INFO_0 := 0
+		static LG_INCLUDE_INDIRECT := 0x0001
+
+		NET_API_STATUS := DllCall("netapi32\NetUserGetLocalGroups", "wstr",  ServerName
+		                                                          , "wstr",  Domain . UserName
+		                                                          , "uint",  LOCALGROUP_USERS_INFO_0
+		                                                          , "uint",  LG_INCLUDE_INDIRECT
+		                                                          , "ptr*",  buf
+		                                                          , "uint",  this.MAX_PREFERRED_LENGTH
+		                                                          , "uint*", EntriesRead
+		                                                          , "uint*"  TotalEntries
+		                                                          , "uint")
+
+		if (NET_API_STATUS = this.NERR_SUCCESS)
+		{
+			addr := buf, LOCALGROUP_USERS_INFO := []
+			loop % EntriesRead
+			{
+				LOCALGROUP_USERS_INFO.Push(StrGet(NumGet(addr + A_PtrSize * 0, "uptr"), "utf-16"))
+				addr += A_PtrSize
+			}
+
+			this.NetApiBufferFree(buf)
+			return LOCALGROUP_USERS_INFO
 		}
 
 		this.NetApiBufferFree(buf)
