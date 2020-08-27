@@ -1,5 +1,5 @@
 # Class_NetworkManagement
- AutoHotkey wrapper for Network Management technology ([msdn-docs](https://docs.microsoft.com/en-us/windows/win32/api/_netmgmt/))
+ AutoHotkey wrapper for Network Management technology ([msdn-docs](https://docs.microsoft.com/en-us/windows/win32/netmgmt/network-management))
 
 
 ## Info
