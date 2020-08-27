@@ -2,6 +2,11 @@
  AutoHotkey wrapper for Network Management technology ([msdn-docs](https://docs.microsoft.com/en-us/windows/win32/api/_netmgmt/))
 
 
+## Info
+This wrapper could be useful for administrators and first and second level supporters.
+All functions in this class are also available as standalone functions. ([src/functions](src/functions))
+
+
 ## Examples
 
 **Retrieves a list of global groups to which a specified user belongs.**
