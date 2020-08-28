@@ -209,14 +209,14 @@ class NetworkManagement
 		static LOCALGROUP_MEMBERS_INFO_3 := 3
 
 		NET_API_STATUS := DllCall("netapi32\NetLocalGroupGetMembers", "wstr",  ServerName
-																	, "wstr",  GroupName
-																	, "uint",  LOCALGROUP_MEMBERS_INFO_3
-																	, "ptr*",  buf
-																	, "uint",  this.MAX_PREFERRED_LENGTH
-																	, "uint*", EntriesRead
-																	, "uint*", TotalEntries
-																	, "uint*", 0
-																	, "uint")
+		                                                            , "wstr",  GroupName
+		                                                            , "uint",  LOCALGROUP_MEMBERS_INFO_3
+		                                                            , "ptr*",  buf
+		                                                            , "uint",  this.MAX_PREFERRED_LENGTH
+		                                                            , "uint*", EntriesRead
+		                                                            , "uint*", TotalEntries
+		                                                            , "uint*", 0
+		                                                            , "uint")
 
 		if (NET_API_STATUS = this.NERR_SUCCESS)
 		{
