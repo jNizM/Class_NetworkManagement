@@ -34,6 +34,17 @@ for i, v in NetGroupEnum {
 }
 ```
 
+**Returns information about each local group account on the specified server.**
+```AutoHotkey
+NetLocalGroupEnum := NetworkManagement.NetLocalGroupEnum("DC01")
+for i, v in NetLocalGroupEnum {
+	for k, v in NetLocalGroupEnum[i]
+		output .= k ": " v "`n"
+	MsgBox % output
+	output := ""
+}
+```
+
 **Retrieves join status information for the specified computer.**
 ```AutoHotkey
 for k, v in NetworkManagement.NetGetJoinInformation()
