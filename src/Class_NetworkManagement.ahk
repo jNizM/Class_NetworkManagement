@@ -261,6 +261,31 @@ class NetworkManagement
 	}
 
 
+	NetLocalGroupGetInfo(GroupName, ServerName := "127.0.0.1")
+	{
+		static LOCALGROUP_INFO_1 := 1
+
+		NET_API_STATUS := DllCall("netapi32\NetLocalGroupGetInfo", "wstr", ServerName
+		                                                         , "wstr", GroupName
+		                                                         , "uint", LOCALGROUP_INFO_1
+		                                                         , "ptr*", buf
+		                                                         , "uint")
+
+		if (NET_API_STATUS = this.NERR_SUCCESS)
+		{
+			LOCALGROUP_INFO := []
+			LOCALGROUP_INFO["name"]    := StrGet(NumGet(buf + A_PtrSize * 0, "uptr"), "utf-16")
+			LOCALGROUP_INFO["comment"] := StrGet(NumGet(buf + A_PtrSize * 1, "uptr"), "utf-16")
+
+			this.NetApiBufferFree(buf)
+			return LOCALGROUP_INFO
+		}
+
+		this.NetApiBufferFree(buf)
+		return false
+	}
+
+
 	NetLocalGroupGetMembers(GroupName, ServerName := "127.0.0.1")
 	{
 		static LOCALGROUP_MEMBERS_INFO_3 := 3
