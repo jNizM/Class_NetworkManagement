@@ -45,6 +45,13 @@ for i, v in NetLocalGroupEnum {
 }
 ```
 
+**Retrieves a list of the members of a particular local group in the security database.**
+```AutoHotkey
+for k, v in NetworkManagement.NetLocalGroupGetMembers("L_GROUP_TEST", "DC01")
+	output .= k ": " v "`n"
+MsgBox % output
+```
+
 **Retrieves join status information for the specified computer.**
 ```AutoHotkey
 for k, v in NetworkManagement.NetGetJoinInformation()

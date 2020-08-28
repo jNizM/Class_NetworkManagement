@@ -204,6 +204,38 @@ class NetworkManagement
 	}
 
 
+	NetLocalGroupGetMembers(GroupName, ServerName := "127.0.0.1")
+	{
+		static LOCALGROUP_MEMBERS_INFO_3 := 3
+
+		NET_API_STATUS := DllCall("netapi32\NetLocalGroupGetMembers", "wstr",  ServerName
+																	, "wstr",  GroupName
+																	, "uint",  LOCALGROUP_MEMBERS_INFO_3
+																	, "ptr*",  buf
+																	, "uint",  this.MAX_PREFERRED_LENGTH
+																	, "uint*", EntriesRead
+																	, "uint*", TotalEntries
+																	, "uint*", 0
+																	, "uint")
+
+		if (NET_API_STATUS = this.NERR_SUCCESS)
+		{
+			addr := buf, LOCALGROUP_MEMBERS_INFO := []
+			loop % EntriesRead
+			{
+				LOCALGROUP_MEMBERS_INFO.Push(StrGet(NumGet(addr + A_PtrSize * 0, "uptr"), "utf-16"))
+				addr += A_PtrSize
+			}
+
+			this.NetApiBufferFree(buf)
+			return LOCALGROUP_MEMBERS_INFO
+		}
+
+		this.NetApiBufferFree(buf)
+		return false
+	}
+
+
 	NetServerGetInfo(ServerName := "127.0.0.1")
 	{
 		static SERVER_INFO_101 := 101
