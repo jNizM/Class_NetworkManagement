@@ -172,6 +172,31 @@ class NetworkManagement
 	}
 
 
+	NetGroupGetInfo(GroupName, ServerName := "127.0.0.1")
+	{
+		static GROUP_INFO_1 := 1
+
+		NET_API_STATUS := DllCall("netapi32\NetGroupGetInfo", "wstr", ServerName
+		                                                    , "wstr", GroupName
+		                                                    , "uint", GROUP_INFO_1
+		                                                    , "ptr*", buf
+		                                                    , "uint")
+
+		if (NET_API_STATUS = this.NERR_SUCCESS)
+		{
+			GROUP_INFO := []
+			GROUP_INFO["name"]    := StrGet(NumGet(buf + A_PtrSize * 0, "uptr"), "utf-16")
+			GROUP_INFO["comment"] := StrGet(NumGet(buf + A_PtrSize * 1, "uptr"), "utf-16")
+
+			this.NetApiBufferFree(buf)
+			return GROUP_INFO
+		}
+
+		this.NetApiBufferFree(buf)
+		return false
+	}
+
+
 	NetGroupGetUsers(GroupName, ServerName := "127.0.0.1")
 	{
 		static GROUP_USERS_INFO_0 := 0
