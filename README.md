@@ -34,6 +34,13 @@ for i, v in NetGroupEnum {
 }
 ```
 
+**Retrieves a list of the members in a particular global group in the security database.**
+```AutoHotkey
+for k, v in NetworkManagement.NetGroupGetUsers("G_GROUP_TEST", "DC01")
+	output .= k ": " v "`n"
+MsgBox % output
+```
+
 **Returns information about each local group account on the specified server.**
 ```AutoHotkey
 NetLocalGroupEnum := NetworkManagement.NetLocalGroupEnum("DC01")

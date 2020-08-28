@@ -172,6 +172,38 @@ class NetworkManagement
 	}
 
 
+	NetGroupGetUsers(GroupName, ServerName := "127.0.0.1")
+	{
+		static GROUP_USERS_INFO_0 := 0
+
+		NET_API_STATUS := DllCall("netapi32\NetGroupGetUsers", "wstr",  ServerName
+		                                                     , "wstr",  GroupName
+		                                                     , "uint",  GROUP_USERS_INFO_0
+		                                                     , "ptr*",  buf
+		                                                     , "uint",  this.MAX_PREFERRED_LENGTH
+		                                                     , "uint*", EntriesRead
+		                                                     , "uint*", TotalEntries
+		                                                     , "uint*", 0
+		                                                     , "uint")
+
+		if (NET_API_STATUS = this.NERR_SUCCESS)
+		{
+			addr := buf, GROUP_USERS_INFO := []
+			loop % EntriesRead
+			{
+				GROUP_USERS_INFO.Push(StrGet(NumGet(addr + A_PtrSize * 0, "uptr"), "utf-16"))
+				addr += A_PtrSize
+			}
+
+			this.NetApiBufferFree(buf)
+			return GROUP_USERS_INFO
+		}
+
+		this.NetApiBufferFree(buf)
+		return false
+	}
+
+
 	NetLocalGroupEnum(ServerName := "127.0.0.1")
 	{
 		static LOCALGROUP_INFO_1 := 1
