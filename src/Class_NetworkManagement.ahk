@@ -3,7 +3,7 @@
 ;
 ; Author ....: jNizM
 ; Released ..: 2020-08-22
-; Modified ..: 2020-08-27
+; Modified ..: 2020-08-28
 ; Github ....: https://github.com/jNizM/Class_NetworkManagement
 ; Forum .....: https://www.autohotkey.com/boards/viewtopic.php?f=6&t=80382
 ; ===============================================================================================================================
@@ -133,6 +133,38 @@ class NetworkManagement
 
 			this.NetApiBufferFree(buf)
 			return JOIN_INFO
+		}
+
+		this.NetApiBufferFree(buf)
+		return false
+	}
+
+
+	NetGroupEnum(ServerName := "127.0.0.1")
+	{
+		static GROUP_INFO_1 := 1
+
+		NET_API_STATUS := DllCall("netapi32\NetGroupEnum", "wstr",  ServerName
+		                                                 , "uint",  GROUP_INFO_1
+		                                                 , "ptr*",  buf
+		                                                 , "uint",  this.MAX_PREFERRED_LENGTH
+		                                                 , "uint*", EntriesRead
+		                                                 , "uint*", TotalEntries
+		                                                 , "uint*", 0
+		                                                 , "uint")
+
+		if (NET_API_STATUS = this.NERR_SUCCESS)
+		{
+			addr := buf, GROUP_INFO := []
+			loop % EntriesRead
+			{
+				GROUP_INFO[A_Index, "name"]    := StrGet(NumGet(addr + A_PtrSize * 0, "uptr"), "utf-16")
+				GROUP_INFO[A_Index, "comment"] := StrGet(NumGet(addr + A_PtrSize * 1, "uptr"), "utf-16")
+				addr += A_PtrSize * 2
+			}
+
+			this.NetApiBufferFree(buf)
+			return GROUP_INFO
 		}
 
 		this.NetApiBufferFree(buf)

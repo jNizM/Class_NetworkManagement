@@ -23,6 +23,17 @@ for k, v in NetworkManagement.NetUserGetLocalGroups(A_UserName, "DOMAIN\", "DC01
 MsgBox % output
 ```
 
+**Retrieves information about each global group in the security database.**
+```AutoHotkey
+NetGroupEnum := NetworkManagement.NetGroupEnum("DC01")
+for i, v in NetGroupEnum {
+	for k, v in NetGroupEnum[i]
+		output .= k ": " v "`n"
+	MsgBox % output
+	output := ""
+}
+```
+
 **Retrieves join status information for the specified computer.**
 ```AutoHotkey
 for k, v in NetworkManagement.NetGetJoinInformation()
