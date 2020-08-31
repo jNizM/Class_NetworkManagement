@@ -1,6 +1,6 @@
 ﻿; ===============================================================================================================================
 ; Function ...: NetGroupGetInfo
-; Return .....: retrieves information about a particular global group in the security database, which is the security accounts
+; Return .....: Retrieves information about a particular global group in the security database, which is the security accounts
 ;               manager (SAM) database or, in the case of domain controllers, the Active Directory.
 ; Link .......: https://docs.microsoft.com/en-us/windows/win32/api/lmaccess/nf-lmaccess-netgroupgetinfo
 ; ===============================================================================================================================

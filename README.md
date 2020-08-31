@@ -59,6 +59,13 @@ for k, v in NetworkManagement.NetLocalGroupGetMembers("L_GROUP_TEST", "DC01")
 MsgBox % output
 ```
 
+**Retrieves information about a particular user account on a server.**
+```AutoHotkey
+for k, v in NetworkManagement.NetUserGetInfo(A_UserName, "DC01")
+	output .= k ": " v "`n"
+MsgBox % output
+```
+
 **Retrieves join status information for the specified computer.**
 ```AutoHotkey
 for k, v in NetworkManagement.NetGetJoinInformation()
