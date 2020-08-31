@@ -68,7 +68,7 @@ NetUserGetInfo(UserName, ServerName := "127.0.0.1")
 		USER_INFO["parms"]            := StrGet(NumGet(buf + A_PtrSize * 10, "uptr"), "utf-16")
 		USER_INFO["workstations"]     := StrGet(NumGet(buf + A_PtrSize * 11, "uptr"), "utf-16")
 		USER_INFO["last_logon"]       := ConvertUnixTime(NumGet(buf + A_PtrSize * 12, "uint"))
-		; USER_INFO["last_logoff"]    := NumGet(buf + A_PtrSize * 12 + 4, "uint")   ; This member is currently not used.
+		; USER_INFO["last_logoff"]    := NumGet(buf + A_PtrSize * 12 + 4, "uint")   ; currently not used.
 		USER_INFO["acct_expires"]     := (NumGet(buf + A_PtrSize * 13, "uint") = TIMEQ_FOREVER)
 		                               ? "NEVER"
 		                               : ConvertUnixTime(NumGet(buf + A_PtrSize * 13, "uint"))
